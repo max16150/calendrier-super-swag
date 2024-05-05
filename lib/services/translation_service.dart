@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:triilab/services/storage_service.dart';
 import 'package:yaml/yaml.dart';
 
@@ -36,7 +34,10 @@ class TranslationDelegate extends LocalizationsDelegate<TranslationService> {
 
   @override
   Future<TranslationService> load(Locale locale) async {
-    return TranslationService()..load(locale.languageCode);
+    TranslationService translationService = TranslationService();
+    await translationService.load(locale.languageCode);
+
+    return translationService;
   }
 
   @override
