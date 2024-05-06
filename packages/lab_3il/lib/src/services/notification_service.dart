@@ -7,7 +7,7 @@ class NotificationService {
   NotificationService(this._lab3il);
 
   /// Get notifications for the specified groups
-  Future<List<Notification>> getNotifications({
+  Future<List<AppNotification>> getNotifications({
     required List<int> groupIds,
     required int limit,
     required int offset,
@@ -22,7 +22,7 @@ class NotificationService {
         },
       );
 
-      return (response.data as List).map((e) => Notification.fromJson(e)).toList();
+      return (response.data as List).map((e) => AppNotification.fromJson(e)).toList().cast<AppNotification>();
     } catch (e) {
       throw ApiError.fromException(e);
     }
@@ -32,12 +32,12 @@ class NotificationService {
   Future<Map<int, DateTime>> getLastNotificationsDate() async {
     try {
       final response = await _client.get(
-        '/notifications/last-notifications-date',
+        '/last-notifications-date',
       );
 
       return Map.fromEntries((response.data as List).map((e) {
-        final groupId = e['group_id'] as int;
-        final lastNotificationDate = DateTime.parse(e['last_notification_date'] as String);
+        final groupId = e['group_id'];
+        final lastNotificationDate = DateTime.parse(e['last_notification_date']);
         return MapEntry(groupId, lastNotificationDate);
       }));
     } catch (e) {
