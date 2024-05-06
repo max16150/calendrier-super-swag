@@ -12,7 +12,7 @@ class SuggestionService {
   }) async {
     try {
       await _client.post(
-        '/suggestions',
+        '/suggest',
         data: suggestion.toJson(),
       );
     } catch (e) {

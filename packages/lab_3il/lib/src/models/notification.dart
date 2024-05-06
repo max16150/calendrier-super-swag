@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 
-class Notification extends Equatable {
+class AppNotification extends Equatable {
   final String groupName;
   final int groupId;
   final String content;
   final DateTime createdAt;
 
-  const Notification({
+  const AppNotification({
     required this.groupName,
     required this.groupId,
     required this.content,
@@ -16,8 +16,8 @@ class Notification extends Equatable {
   @override
   List<Object> get props => [groupName, groupId, content, createdAt];
 
-  factory Notification.fromJson(Map<String, dynamic> json) {
-    return Notification(
+  factory AppNotification.fromJson(Map<String, dynamic> json) {
+    return AppNotification(
       groupName: json['group_name'],
       groupId: json['group_id'],
       content: json['content'],
