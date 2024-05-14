@@ -41,10 +41,18 @@ class _NavigationState extends State<Navigation> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
+          // Help
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.help),
           ),
+          // Fullscreen
+          /*
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.fullscreen),
+          ),
+          */
         ],
         title: AnimatedSwitcher(
           duration: const Duration(milliseconds: 150),
