@@ -9,7 +9,8 @@ void main() {
 
     setUpAll(() async {
       lab3il = await Lab3il.initialize(
-        client: Dio(BaseOptions(baseUrl: 'http://localhost/api/v1')),
+        //client: Dio(BaseOptions(baseUrl: 'http://localhost/api/v1')),
+        client: Dio(BaseOptions(baseUrl: 'https://3ilab.fr/api/v1')),
       );
     });
 
@@ -45,7 +46,7 @@ void main() {
     */
 
     test('updateAgenda', () async {
-      await lab3il.agendaService.updateAgenda(groupId: 0);
+      await lab3il.agendaService.updateAgenda(groupId: 2);
     });
   });
 }

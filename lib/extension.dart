@@ -8,8 +8,8 @@ extension AppContext on BuildContext {
 }
 
 extension TranslationServiceExtension on BuildContext {
-  String tr(String key) {
-    return Localizations.of<TranslationService>(this, TranslationService)!.translate(key);
+  String tr(String key, {Map args = const {}, int? count = 1}) {
+    return Localizations.of<TranslationService>(this, TranslationService)!.translate(key, args: args, count: count);
   }
 
   Future<void> changeLocale(Locale locale) async {

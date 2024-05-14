@@ -8,7 +8,8 @@ void main() {
 
     setUpAll(() async {
       lab3il = await Lab3il.initialize(
-        client: Dio(BaseOptions(baseUrl: 'http://localhost/api/v1')),
+        //client: Dio(BaseOptions(baseUrl: 'http://localhost/api/v1')),
+        client: Dio(BaseOptions(baseUrl: 'https://3ilab.fr/api/v1')),
       );
     });
 
