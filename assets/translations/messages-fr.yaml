@@ -1,5 +1,10 @@
-randomize_seed_color: "Couleur aléatoire"
-toggle_theme: "Changer de thème"
-toggle_language: "Changer de langue"
-agenda: "Agenda"
-settings: "Paramètres"
+randomize_seed_color: Couleur aléatoire
+toggle_theme: Changer de thème
+toggle_language: Changer de langue
+agenda: Agenda
+settings: Paramètres
+close: Fermer
+
+course_from: De {time} le {date}
+course_to: à {time} le {date}
+rooms: Salles

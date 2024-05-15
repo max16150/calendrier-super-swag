@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:lab_3il/lab_3il.dart';
 import 'package:provider/provider.dart';
 import 'package:triilab/firebase_options.dart';
 import 'package:triilab/services/storage_service.dart';
@@ -23,6 +24,8 @@ void main() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
+    final Lab3il lab = await Lab3il.initialize();
+
     if (kDebugMode) {
       await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
     } else {
@@ -39,13 +42,14 @@ void main() async {
     };
 
     ThemeProvider themeProvider = await ThemeProvider.create();
-    Intl.defaultLocale = await StorageService().getLanguageCode();
+    Intl.defaultLocale = await StorageService().getLanguageCode() ?? 'fr';
 
     runApp(
       MultiProvider(
         providers: [
           ChangeNotifierProvider.value(value: themeProvider),
           ChangeNotifierProvider(create: (context) => TranslationProvider()),
+          Provider.value(value: lab),
         ],
         child: const MyApp(),
       ),
@@ -62,8 +66,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     Provider.of<TranslationProvider>(context);
-
-    print('Current locale: ${Intl.getCurrentLocale()}');
 
     return MaterialApp(
       title: '3iLab',
