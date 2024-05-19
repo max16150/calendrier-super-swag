@@ -3,21 +3,23 @@ import '../core/settings_export.dart';
 import 'base_button.dart';
 
 class CustomElevatedButton extends BaseButton {
-  CustomElevatedButton(
-      {Key? key,
-      this.decoration,
-      this.leftIcon,
-      this.rightIcon,
-      EdgeInsets? margin,
-      VoidCallback? onPressed,
-      ButtonStyle? buttonStyle,
-      Alignment? alignment,
-      TextStyle? buttonTextStyle,
-      bool? isDisabled,
-      double? height,
-      double? width,
-      required String text, required Null Function() onTap})
-      : super(
+  CustomElevatedButton({
+    Key? key,
+    this.decoration,
+    this.leftIcon,
+    this.rightIcon,
+    EdgeInsets? margin,
+    VoidCallback? onPressed,
+    ButtonStyle? buttonStyle,
+    Alignment? alignment,
+    TextStyle? buttonTextStyle,
+    bool? isDisabled,
+    double? height,
+    double? width,
+    required String text,
+    required VoidCallback onTap,
+  }) : super(
+          key: key,
           text: text,
           onPressed: onTap,
           buttonStyle: buttonStyle,
@@ -30,9 +32,7 @@ class CustomElevatedButton extends BaseButton {
         );
 
   final BoxDecoration? decoration;
-
   final Widget? leftIcon;
-
   final Widget? rightIcon;
 
   @override
@@ -40,14 +40,14 @@ class CustomElevatedButton extends BaseButton {
     return alignment != null
         ? Align(
             alignment: alignment ?? Alignment.center,
-            child: buildElevatedButtonWidget,
+            child: buildElevatedButtonWidget(context),
           )
-        : buildElevatedButtonWidget;
+        : buildElevatedButtonWidget(context);
   }
 
-  Widget get buildElevatedButtonWidget => Container(
-        height: this.height ?? 40,
-        width: this.width ?? double.maxFinite,
+  Widget buildElevatedButtonWidget(BuildContext context) => Container(
+        height: height ?? 40,
+        width: width ?? double.maxFinite,
         margin: margin,
         decoration: decoration,
         child: ElevatedButton(
@@ -60,7 +60,8 @@ class CustomElevatedButton extends BaseButton {
               leftIcon ?? const SizedBox.shrink(),
               Text(
                 text,
-                style: buttonTextStyle ?? CustomTextStyles.titleSmallPurple50,
+                // Passez le contexte à la méthode titleSmallPurple50
+                style: buttonTextStyle ?? CustomTextStyles.titleSmallPurple50(context),
               ),
               rightIcon ?? const SizedBox.shrink(),
             ],

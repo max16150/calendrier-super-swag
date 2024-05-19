@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../core/settings_export.dart';
 import '../widgets/custom_elevated_button.dart';
 import '../widgets/custom_floating_text_field.dart';
-
 
 // ignore_for_file: must_be_immutable
 class Suggestion extends StatelessWidget {
@@ -16,11 +16,16 @@ class Suggestion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Accédez au ThemeProvider à l'aide de Provider.of
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Suggestion'),
           centerTitle: true,
+          backgroundColor: themeProvider
+              .seedColor, // Utilisez la couleur de base pour la barre d'applications
         ),
         body: SizedBox(
           child: SingleChildScrollView(
@@ -44,8 +49,12 @@ class Suggestion extends StatelessWidget {
                         maxLines: 4,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.justify,
-                        style: theme.textTheme.bodyMedium!.copyWith(
-                          height: 1.43,
+                        style: TextStyle(
+                          color: themeProvider.themeMode == ThemeMode.dark
+                              ? Colors
+                                  .white // Vous pouvez choisir une couleur appropriée pour le texte en mode sombre
+                              : Colors
+                                  .black, // Et une couleur appropriée pour le texte en mode clair
                         ),
                       ),
                     ),
@@ -53,6 +62,8 @@ class Suggestion extends StatelessWidget {
                     Divider(
                       indent: 16,
                       endIndent: 16,
+                      color: themeProvider
+                          .seedColor, // Utilisez la couleur de base pour le séparateur
                     ),
                     SizedBox(height: 7),
                     _buildRecipient(context),
@@ -74,39 +85,65 @@ class Suggestion extends StatelessWidget {
     );
   }
 
+  // Les méthodes _buildRecipient, _buildSender, _buildSubject, _buildContent et _buildEnvoyer doivent également être ajustées
+  // pour utiliser le themeProvider pour définir les styles et les couleurs en fonction du thème actuel.
   Widget _buildRecipient(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return CustomFloatingTextField(
       controller: recipientController,
       labelText: "Destinataire",
-      labelStyle: CustomTextStyles.bodyLargeOnPrimaryContainer,
+      labelStyle: themeProvider.themeMode == ThemeMode.dark
+          ? CustomTextStyles.bodyLargeOnPrimaryContainer(context).copyWith(
+              color: themeProvider
+                  .seedColor, // Utilisez la couleur de base pour le texte en mode sombre
+            )
+          : CustomTextStyles.bodyLargeOnPrimaryContainer(context),
       hintText: "Destinataire",
-      hintStyle: CustomTextStyles.bodyLargeOnPrimaryContainer,
+      hintStyle: CustomTextStyles.bodyLargeOnPrimaryContainer(context),
     );
   }
 
   Widget _buildSender(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return CustomFloatingTextField(
       controller: senderController,
       labelText: "Emetteur",
-      labelStyle: theme.textTheme.bodyLarge!,
+      labelStyle: themeProvider.themeMode == ThemeMode.dark
+          ? Theme.of(context).textTheme.bodyLarge!.copyWith(
+                color: themeProvider
+                    .seedColor, // Utilisez la couleur de base pour le texte en mode sombre
+              )
+          : Theme.of(context).textTheme.bodyLarge!,
       hintText: "Emetteur",
     );
   }
 
   Widget _buildSubject(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return CustomFloatingTextField(
       controller: subjectController,
       labelText: "Objet",
-      labelStyle: theme.textTheme.bodyLarge!,
+      labelStyle: themeProvider.themeMode == ThemeMode.dark
+          ? Theme.of(context).textTheme.bodyLarge!.copyWith(
+                color: themeProvider
+                    .seedColor, // Utilisez la couleur de base pour le texte en mode sombre
+              )
+          : Theme.of(context).textTheme.bodyLarge!,
       hintText: "Objet",
     );
   }
 
   Widget _buildContent(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return CustomFloatingTextField(
       controller: contentController,
       labelText: "Contenu",
-      labelStyle: CustomTextStyles.bodyMediumGray400,
+      labelStyle: themeProvider.themeMode == ThemeMode.dark
+          ? CustomTextStyles.bodyMediumGray400(context).copyWith(
+              color: themeProvider.seedColor.withOpacity(
+                  0.6), // Utilisez la couleur de base avec opacité pour le texte en mode sombre
+            )
+          : CustomTextStyles.bodyMediumGray400(context),
       hintText: "Contenu",
       textInputAction: TextInputAction.done,
       textInputType: TextInputType.visiblePassword,
@@ -115,19 +152,35 @@ class Suggestion extends StatelessWidget {
     );
   }
 
- Widget _buildEnvoyer(BuildContext context) {
-  return CustomElevatedButton(
-    text: "Envoyer",
-    margin: EdgeInsets.only(
-      left: 16,
-      right: 16,
-      bottom: 16,
-    ),
-    leftIcon: const Icon(Icons.send),
-    buttonStyle: CustomButtonStyles.fillPrimary,
-    buttonTextStyle: theme.textTheme.titleSmall!,
-    onTap: () {  },
-  );
-}
-
+  Widget _buildEnvoyer(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    return CustomElevatedButton(
+      text: "Envoyer",
+      margin: const EdgeInsets.only(
+        left: 16,
+        right: 16,
+        bottom: 16,
+      ),
+      leftIcon: const Icon(Icons.send),
+      buttonStyle: CustomButtonStyles.fillPrimary(context),
+      buttonTextStyle: TextStyle(
+        color: themeProvider.themeMode == ThemeMode.dark
+            ? Colors
+                .white // Utilisez la couleur blanche pour le texte en mode sombre
+            : Colors
+                .black, // Utilisez la couleur noire pour le texte en mode clair
+        fontSize: Theme.of(context)
+            .textTheme
+            .titleSmall!
+            .fontSize, // Gardez la taille de police originale
+        fontWeight: Theme.of(context)
+            .textTheme
+            .titleSmall!
+            .fontWeight, // Gardez le poids de la police originale
+      ),
+      onTap: () {
+        // Logique d'envoi ici
+      },
+    );
+  }
 }

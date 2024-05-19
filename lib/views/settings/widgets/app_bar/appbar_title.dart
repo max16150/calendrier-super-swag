@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../core/settings_export.dart';
+
 
 // ignore_for_file: must_be_immutable
 class AppBarTitle extends StatelessWidget {
@@ -11,6 +13,9 @@ class AppBarTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Accédez au ThemeProvider à l'aide de Provider.of
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    
     return GestureDetector(
       onTap: () {
         onTap?.call();
@@ -19,8 +24,11 @@ class AppBarTitle extends StatelessWidget {
         padding: margin ?? EdgeInsets.zero,
         child: Text(
           text,
-          style: theme.textTheme.titleLarge!.copyWith(
-            color: theme.colorScheme.onPrimaryContainer.withOpacity(1),
+          style: TextStyle(
+            // Utilisez ThemeProvider pour obtenir les propriétés du thème
+            fontSize: 20, // Exemple de taille de police
+            fontWeight: FontWeight.bold,
+            color: themeProvider.seedColor, // Utilisez la couleur de base du ThemeProvider
           ),
         ),
       ),

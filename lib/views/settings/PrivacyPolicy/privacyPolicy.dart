@@ -1,54 +1,69 @@
 import 'package:flutter/material.dart';
+import 'package:lab_3il/lab_3il.dart';
+import 'package:provider/provider.dart';
+import '../core/settings_export.dart';
+//import 'package:lab_3il/src/models/privacy_policy.dart';
 
-class PrivacyPolicy extends StatelessWidget {
-  const PrivacyPolicy({super.key});
+
+class PrivacyPolicyScreen extends StatelessWidget {
+  const PrivacyPolicyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    Lab3il lab = Provider.of<Lab3il>(context);
+
+
+    Future<String> getPrivacyPolicyContent() async {
+      PrivacyPolicy privacyPolicy = await lab.informationsService.getPrivacyPolicy();
+      return privacyPolicy.content;
+    }
+
+    // Utilisation de FutureBuilder pour laffiachage du content
     return Scaffold(
       appBar: AppBar(
         title: const Text('Privacy Policy'),
         centerTitle: true,
+        backgroundColor: themeProvider.themeMode == ThemeMode.dark
+            ? themeProvider.seedColor // couleur de base pour le thème sombre
+            : Theme.of(context).colorScheme.primary, // Couleur par défaut pour le thème clair
       ),
-      body: const SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text.rich(
-                TextSpan(
-                  style: TextStyle(fontSize: 16.0, height: 1.5),
-                  children: [
+            // ...
+            FutureBuilder<String>(
+              future: getPrivacyPolicyContent(),
+              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  return Text.rich(
                     TextSpan(
-                      text:
-                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        height: 1.5,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white // 
+                            : Colors.black, // 
+                      ),
+                      children: [
+                        TextSpan(
+                          text: snapshot.data,
+                        ),
+                        // ...
+                      ],
                     ),
-                  ],
-                ),
-                textAlign: TextAlign.justify,
-              ),
+                    textAlign: TextAlign.justify,
+                  );
+                }
+              },
             ),
-            SizedBox(height: 16.0),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text.rich(
-                TextSpan(
-                  style: TextStyle(fontSize: 16.0, height: 1.5),
-                  children: [
-                    TextSpan(
-                      text:
-                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore ',
-                    ),
-                    //autres contenus
-                  ],
-                ),
-                textAlign: TextAlign.justify,
-              ),
-            ),
-            SizedBox(height: 16.0),
-            // autres contenus
+            // ...
           ],
         ),
       ),

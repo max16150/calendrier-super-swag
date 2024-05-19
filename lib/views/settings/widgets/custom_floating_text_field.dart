@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../core/settings_export.dart';
 
 class CustomFloatingTextField extends StatelessWidget {
@@ -64,67 +65,74 @@ class CustomFloatingTextField extends StatelessWidget {
         : floatingTextFieldWidget(context);
   }
 
-  Widget floatingTextFieldWidget(BuildContext context) => SizedBox(
-        width: width ?? double.maxFinite,
-        child: TextFormField(
-          scrollPadding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          controller: controller,
-          focusNode: focusNode,
-          onTapOutside: (event) {
-            if (focusNode != null) {
-              focusNode?.unfocus();
-            } else {
-              FocusManager.instance.primaryFocus?.unfocus();
-            }
-          },
-          autofocus: autofocus,
-          style: textStyle ?? CustomTextStyles.bodyMediumGray400,
-          obscureText: obscureText,
-          textInputAction: textInputAction,
-          keyboardType: textInputType,
-          maxLines: maxLines ?? 1,
-          decoration: decoration,
-          validator: validator,
-        ),
-      );
-  InputDecoration get decoration => InputDecoration(
-        hintText: hintText ?? "",
-        hintStyle: hintStyle ?? theme.textTheme.bodyLarge,
-        labelText: labelText ?? "",
-        labelStyle: labelStyle,
-        prefixIcon: prefix,
-        prefixIconConstraints: prefixConstraints,
-        suffixIcon: suffix,
-        suffixIconConstraints: suffixConstraints,
-        isDense: true,
-        contentPadding:
-            contentPadding ?? EdgeInsets.fromLTRB(16.0, 17.0, 16.0, 19.0),
-        fillColor: fillColor,
-        filled: filled,
-        border: borderDecoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(4.0),
-              borderSide: BorderSide(
-                color: theme.colorScheme.errorContainer,
-                width: 1.0,
-              ),
-            ),
-        enabledBorder: borderDecoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(4.0),
-              borderSide: BorderSide(
-                color: theme.colorScheme.errorContainer,
-                width: 1.0,
-              ),
-            ),
-        focusedBorder: borderDecoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(4.0),
-              borderSide: BorderSide(
-                color: appTheme.gray500,
-                width: 1.0,
-              ),
-            ),
-      );
+  Widget floatingTextFieldWidget(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    return SizedBox(
+      width: width ?? double.maxFinite,
+      child: TextFormField(
+        scrollPadding: scrollPadding ??
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        controller: controller,
+        focusNode: focusNode,
+        autofocus: autofocus,
+        style: textStyle ?? CustomTextStyles.bodyMediumGray400(context),
+        obscureText: obscureText,
+        textInputAction: textInputAction,
+        keyboardType: textInputType,
+        maxLines: maxLines ?? 1,
+        decoration: _buildDecoration(context, themeProvider),
+        validator: validator,
+      ),
+    );
+  }
+
+  InputDecoration _buildDecoration(
+      BuildContext context, ThemeProvider themeProvider) {
+    return InputDecoration(
+      hintText: hintText ?? "",
+      hintStyle: hintStyle ?? Theme.of(context).textTheme.bodyLarge,
+      labelText: labelText ?? "",
+      labelStyle: labelStyle ?? Theme.of(context).textTheme.bodyLarge,
+      prefixIcon: prefix,
+      prefixIconConstraints: prefixConstraints,
+      suffixIcon: suffix,
+      suffixIconConstraints: suffixConstraints,
+      isDense: true,
+      contentPadding:
+          contentPadding ?? EdgeInsets.fromLTRB(16.0, 17.0, 16.0, 19.0),
+      fillColor: fillColor ?? themeProvider.seedColor,
+      filled: filled,
+      border: borderDecoration ?? _buildBorder(context, themeProvider),
+      enabledBorder: borderDecoration ?? _buildBorder(context, themeProvider),
+      focusedBorder: borderDecoration ?? _buildFocusedBorder(context),
+    );
+  }
+
+  OutlineInputBorder _buildBorder(
+      BuildContext context, ThemeProvider themeProvider) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(4.0),
+      borderSide: BorderSide(
+        color: themeProvider.themeMode == ThemeMode.dark
+            ? themeProvider
+                .seedColor // Utilisez la couleur de base pour le thème sombre
+            : Theme.of(context)
+                .colorScheme
+                .errorContainer, // Couleur par défaut pour le thème clair
+        width: 1.0,
+      ),
+    );
+  }
+
+  OutlineInputBorder _buildFocusedBorder(BuildContext context) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(4.0),
+      borderSide: BorderSide(
+        color: Theme.of(context)
+            .colorScheme
+            .primary, // Utilisez la couleur primaire pour la bordure focalisée
+        width: 1.0,
+      ),
+    );
+  }
 }

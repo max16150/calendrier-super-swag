@@ -1,54 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'core/settings_export.dart';
-//import 'widgets/app_bar/appbar_title.dart';
-//import 'widgets/app_bar/custom_app_bar.dart';
 import 'widgets/custom_elevated_button.dart';
 import 'widgets/custom_switch.dart';
 import 'Suggestion/suggestion.dart';
 import 'PrivacyPolicy/privacyPolicy.dart';
 import 'TermsOfUse/termsOfUse.dart';
-// ignore_for_file: must_be_immutable
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return SafeArea(
       child: Scaffold(
-        //appBar: _buildAppBar(context),
         body: Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               _buildNotificationColumn(context),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _buildApplicationColumn(context),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _buildTimezoneColumn(context),
-              SizedBox(height: 28),
+              const SizedBox(height: 28),
               CustomElevatedButton(
                 text: "Conditions d'utilisation",
+                buttonTextStyle: TextStyle(
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white // Couleur pour le texte en mode sombre
+                      : Colors.black, // Couleur pour le texte en mode clair
+                ),
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: ((context) => const TermsOfUse())));
                 },
-                //title: const Text('Conditions d\'utilisation'),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               CustomElevatedButton(
                 text: "Politique de confidentialité",
+                buttonTextStyle: TextStyle(
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white // Couleur pour le texte en mode sombre
+                      : Colors.black, // Couleur pour le texte en mode clair
+                ),
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: ((context) => const PrivacyPolicy())));
+                      builder: ((context) => const PrivacyPolicyScreen())));
                 },
-                //title: const Text('Politique de confidentialité'),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               CustomElevatedButton(
                 text: "Suggérer une amélioration",
-               // buttonStyle: CustomButtonStyles.fillPrimary,
-                //buttonTextStyle: theme.textTheme.titleSmall!,
+                buttonTextStyle: TextStyle(
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white // Couleur pour le texte en mode sombre
+                      : Colors.black, // Couleur pour le texte en mode clair
+                ),
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: ((context) => Suggestion())));
@@ -60,43 +69,37 @@ class Settings extends StatelessWidget {
       ),
     );
   }
- 
-  /**PreferredSizeWidget _buildAppBar(BuildContext context) {
-    return CustomAppBar(
-      centerTitle: true,
-      title: AppBarTitle(
-        text: "Paramètres",
-      ),
-      styleType: Style.bgFill,
-    );
-  }**/
 }
 
 
 /// Section Widget
 Widget _buildNotificationColumn(BuildContext context) {
+  final themeProvider = Provider.of<ThemeProvider>(context);
   bool isSelectedSwitch = false;
   bool isSelectedSwitch1 = false;
 
   return Container(
-    padding: EdgeInsets.symmetric(
+    padding: const EdgeInsets.symmetric(
       horizontal: 16,
       vertical: 14,
     ),
-    decoration: AppDecoration.fillPrimaryContainer.copyWith(
-      borderRadius: BorderRadiusStyle.roundedBorder16,
+    decoration: BoxDecoration(
+      color: themeProvider.themeMode == ThemeMode.dark
+          ? themeProvider.seedColor // Utilisez la couleur de base pour le thème sombre
+          : Theme.of(context).colorScheme.primaryContainer, // Couleur par défaut pour le thème clair
+      borderRadius: BorderRadius.circular(16),
     ),
     child: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(height: 2),
+        const SizedBox(height: 2),
         Text(
           "Notifications",
-          style: theme.textTheme.titleLarge,
+          style: Theme.of(context).textTheme.titleLarge,
         ),
-        SizedBox(height: 18),
+        const SizedBox(height: 18),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -106,16 +109,16 @@ Widget _buildNotificationColumn(BuildContext context) {
                 children: [
                   Text(
                     "Nouvelle semaine",
-                    style: theme.textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  SizedBox(height: 7),
+                  const SizedBox(height: 7),
                   SizedBox(
                     width: 259,
                     child: Text(
                       "Je souhaite être notifié quand une ou plusieurs semaines de cours sont ajoutées aux emplois du temps de mes groupes suivis",
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodySmall!.copyWith(
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
                         height: 1.33,
                       ),
                     ),
@@ -124,7 +127,7 @@ Widget _buildNotificationColumn(BuildContext context) {
               ),
             ),
             CustomSwitch(
-              margin: EdgeInsets.only(
+              margin: const EdgeInsets.only(
                 left: 36,
                 top: 20,
                 bottom: 23,
@@ -136,7 +139,7 @@ Widget _buildNotificationColumn(BuildContext context) {
             ),
           ],
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -146,16 +149,16 @@ Widget _buildNotificationColumn(BuildContext context) {
                 children: [
                   Text(
                     "Modifications",
-                    style: theme.textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  SizedBox(height: 7),
+                  const SizedBox(height: 7),
                   SizedBox(
                     width: 270,
                     child: Text(
                       "Je souhaite être notifié quand mes emplois du temps suivis subissent des modifications (ajout de cours, modification de salle, annulation, ...)",
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodySmall!.copyWith(
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
                         height: 1.33,
                       ),
                     ),
@@ -164,7 +167,7 @@ Widget _buildNotificationColumn(BuildContext context) {
               ),
             ),
             CustomSwitch(
-              margin: EdgeInsets.only(
+              margin: const EdgeInsets.only(
                 left: 25,
                 top: 20,
                 bottom: 23,
@@ -183,41 +186,47 @@ Widget _buildNotificationColumn(BuildContext context) {
 
 /// Section Widget
 Widget _buildApplicationColumn(BuildContext context) {
-  bool isSelectedSwitch2 = false;
+  final themeProvider = Provider.of<ThemeProvider>(context);
+  bool isSelectedSwitch2 = false; // Cette variable doit être gérée par un état pour fonctionner correctement
+
   return Container(
-    padding: EdgeInsets.all(16),
-    decoration: AppDecoration.fillPrimaryContainer.copyWith(
-      borderRadius: BorderRadiusStyle.roundedBorder16,
+    padding: const EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: themeProvider.themeMode == ThemeMode.dark
+          ? themeProvider.seedColor // Utilisez la couleur de base pour le thème sombre
+          : Theme.of(context).colorScheme.primaryContainer, // Couleur par défaut pour le thème clair
+      borderRadius: BorderRadius.circular(16),
     ),
     child: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(height: 2),
+        const SizedBox(height: 2),
         Text(
           "Application",
-          style: theme.textTheme.titleLarge,
+          style: Theme.of(context).textTheme.titleLarge,
         ),
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                 top: 5,
                 bottom: 7,
               ),
               child: Text(
                 "Mode sombre",
-                style: theme.textTheme.titleMedium,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
             CustomSwitch(
               value: isSelectedSwitch2,
               onChange: (value) {
                 isSelectedSwitch2 = value;
+                // Ici, vous devez ajouter la logique pour changer le thème de l'application
               },
             )
           ],
@@ -229,10 +238,15 @@ Widget _buildApplicationColumn(BuildContext context) {
 
 /// Section Widget
 Widget _buildTimezoneColumn(BuildContext context) {
+  final themeProvider = Provider.of<ThemeProvider>(context);
+
   return Container(
-    padding: EdgeInsets.all(16),
-    decoration: AppDecoration.fillPrimaryContainer.copyWith(
-      borderRadius: BorderRadiusStyle.roundedBorder16,
+    padding: const EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: themeProvider.themeMode == ThemeMode.dark
+          ? themeProvider.seedColor // Utilisez la couleur de base pour le thème sombre
+          : Theme.of(context).colorScheme.primaryContainer, // Couleur par défaut pour le thème clair
+      borderRadius: BorderRadius.circular(16),
     ),
     child: Column(
       mainAxisSize: MainAxisSize.min,
@@ -243,43 +257,39 @@ Widget _buildTimezoneColumn(BuildContext context) {
           versionText: "Fuseau Horaire",
           releaseDate: "France (UTC+2)",
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         _buildVersionRow(
           context,
           versionText: "Version",
           releaseDate: "1.02 - Février 2024",
         ),
-        SizedBox(height: 14),
+        const SizedBox(height: 14),
         Text(
           "Vous êtes à jour !",
-          style: CustomTextStyles.titleSmallOnPrimaryContainer,
+          style: CustomTextStyles.titleSmallOnPrimaryContainer(context),
         ),
       ],
     ),
   );
 }
 
+
 /// Common widget
-Widget _buildVersionRow(
-  BuildContext context, {
-  required String versionText,
-  required String releaseDate,
-}) {
+Widget _buildVersionRow(BuildContext context, {required String versionText, required String releaseDate}) {
+  // Utilisez Theme.of(context) pour accéder aux données de thème actuelles
+  final textTheme = Theme.of(context).textTheme;
+
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Text(
         versionText,
-        style: theme.textTheme.titleMedium!.copyWith(
-          color: theme.colorScheme.onPrimaryContainer.withOpacity(1),
-        ),
+        style: textTheme.bodyMedium, // Appliquez le style de texte pour le texte de la version
       ),
       Text(
         releaseDate,
-        style: theme.textTheme.bodyMedium!.copyWith(
-          color: theme.colorScheme.onPrimaryContainer.withOpacity(1),
-        ),
-      )
+        style: textTheme.bodyMedium, // Appliquez le style de texte pour la date de sortie
+      ),
     ],
   );
 }

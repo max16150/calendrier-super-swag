@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../core/settings_export.dart';
+// Assurez-vous d'importer les fichiers nécessaires
 
 extension TextStyleRoboto on TextStyle {
   TextStyle get roboto {
@@ -14,20 +16,48 @@ extension TextStyleRoboto on TextStyle {
 /// Additionally, this class includes extensions on [TextStyle] to easily apply.
 class CustomTextStyles {
   // Body text style
-  static TextStyle get bodyLargeOnPrimaryContainer => theme.textTheme.bodyLarge!.copyWith(
-    color: theme.colorScheme.onPrimaryContainer,
-  );
+  static TextStyle bodyLargeOnPrimaryContainer(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    return themeProvider.themeMode == ThemeMode.dark
+        ? Theme.of(context).textTheme.bodyLarge!.copyWith(
+            color: themeProvider.seedColor, // Utilisez la couleur de base pour le thème sombre
+          )
+        : Theme.of(context).textTheme.bodyLarge!.copyWith(
+            color: Theme.of(context).colorScheme.onPrimaryContainer, // Couleur par défaut pour le thème clair
+          );
+  }
 
-  static TextStyle get bodyMediumGray400 => theme.textTheme.bodyMedium!.copyWith(
-    color: appTheme.gray400,
-  );
+  static TextStyle bodyMediumGray400(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    return themeProvider.themeMode == ThemeMode.dark
+        ? Theme.of(context).textTheme.bodyMedium!.copyWith(
+            color: themeProvider.seedColor.withOpacity(0.6), // Utilisez la couleur de base avec opacité pour le thème sombre
+          )
+        : Theme.of(context).textTheme.bodyMedium!.copyWith(
+            color: Colors.grey[400], // Couleur par défaut pour le thème clair
+          );
+  }
 
   // Title text style
-  static TextStyle get titleSmallOnPrimaryContainer => theme.textTheme.titleSmall!.copyWith(
-    color: theme.colorScheme.onPrimaryContainer.withOpacity(1),
-  );
+  static TextStyle titleSmallOnPrimaryContainer(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    return themeProvider.themeMode == ThemeMode.dark
+        ? Theme.of(context).textTheme.titleSmall!.copyWith(
+            color: themeProvider.seedColor.withOpacity(1), // Utilisez la couleur de base pour le thème sombre
+          )
+        : Theme.of(context).textTheme.titleSmall!.copyWith(
+            color: Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(1), // Couleur par défaut pour le thème clair
+          );
+  }
 
-  static TextStyle get titleSmallPurple50 => theme.textTheme.titleSmall!.copyWith(
-    color: appTheme.purple50,
-  );
+  static TextStyle titleSmallPurple50(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    return themeProvider.themeMode == ThemeMode.dark
+        ? Theme.of(context).textTheme.titleSmall!.copyWith(
+            color: themeProvider.seedColor, // Utilisez la couleur de base pour le thème sombre
+          )
+        : Theme.of(context).textTheme.titleSmall!.copyWith(
+            color: Colors.purple[50], // Couleur par défaut pour le thème clair
+          );
+  }
 }

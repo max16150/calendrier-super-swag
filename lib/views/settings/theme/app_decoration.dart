@@ -1,19 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../core/settings_export.dart';
+
 
 class AppDecoration {
   // Fill decorations
-  static BoxDecoration get fillOnPrimary => BoxDecoration(
-    color: theme.colorScheme.onPrimary,
-  );
+  static BoxDecoration fillOnPrimary(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    return BoxDecoration(
+      color: themeProvider.themeMode == ThemeMode.dark
+          ? themeProvider.seedColor // Utilisez la couleur de base pour le thème sombre
+          : Theme.of(context).colorScheme.onPrimary, // Utilisez la couleur onPrimary pour le thème clair
+    );
+  }
 
-  static BoxDecoration get fillPrimaryContainer => BoxDecoration(
-    color: theme.colorScheme.primaryContainer,
-  );
+  static BoxDecoration fillPrimaryContainer(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    return BoxDecoration(
+      color: themeProvider.themeMode == ThemeMode.dark
+          ? themeProvider.seedColor // Utilisez la couleur de base pour le thème sombre
+          : Theme.of(context).colorScheme.primaryContainer, // Utilisez la couleur primaryContainer pour le thème clair
+    );
+  }
 
-  static BoxDecoration get fillWhiteA => BoxDecoration(
-    color: appTheme.whiteA700,
-  );
+  static BoxDecoration fillWhiteA(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    return BoxDecoration(
+      color: themeProvider.themeMode == ThemeMode.dark
+          ? themeProvider.seedColor // Utilisez la couleur de base pour le thème sombre
+          : Colors.white, // Utilisez la couleur blanche pour le thème clair
+    );
+  }
 }
 
 class BorderRadiusStyle {
