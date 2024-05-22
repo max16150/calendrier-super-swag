@@ -10,12 +10,14 @@ import 'TermsOfUse/termsOfUse.dart';
 class Settings extends StatelessWidget {
   const Settings({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
+@override
+Widget build(BuildContext context) {
+  final themeProvider = Provider.of<ThemeProvider>(context);
+  return SafeArea(
+    child: Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView( // Ajout du SingleChildScrollView ici
+        child: Container(
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
@@ -67,6 +69,7 @@ class Settings extends StatelessWidget {
           ),
         ),
       ),
+    ),
     );
   }
 }

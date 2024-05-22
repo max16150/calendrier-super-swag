@@ -75,7 +75,12 @@ class CustomFloatingTextField extends StatelessWidget {
         controller: controller,
         focusNode: focusNode,
         autofocus: autofocus,
-        style: textStyle ?? CustomTextStyles.bodyMediumGray400(context),
+        style: textStyle ??
+            TextStyle(
+              color: themeProvider.themeMode == ThemeMode.dark
+                  ? Colors.white
+                  : Colors.black,
+            ),
         obscureText: obscureText,
         textInputAction: textInputAction,
         keyboardType: textInputType,
@@ -114,11 +119,8 @@ class CustomFloatingTextField extends StatelessWidget {
       borderRadius: BorderRadius.circular(4.0),
       borderSide: BorderSide(
         color: themeProvider.themeMode == ThemeMode.dark
-            ? themeProvider
-                .seedColor // Utilisez la couleur de base pour le thème sombre
-            : Theme.of(context)
-                .colorScheme
-                .errorContainer, // Couleur par défaut pour le thème clair
+            ? themeProvider.seedColor
+            : Theme.of(context).colorScheme.errorContainer,
         width: 1.0,
       ),
     );
@@ -128,9 +130,7 @@ class CustomFloatingTextField extends StatelessWidget {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(4.0),
       borderSide: BorderSide(
-        color: Theme.of(context)
-            .colorScheme
-            .primary, // Utilisez la couleur primaire pour la bordure focalisée
+        color: Theme.of(context).colorScheme.primary,
         width: 1.0,
       ),
     );
