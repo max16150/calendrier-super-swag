@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:lab_3il/lab_3il.dart';
 import 'package:provider/provider.dart';
 import 'package:triilab/firebase_options.dart';
+import 'package:triilab/providers/fullscreen_provider.dart';
 import 'package:triilab/services/storage_service.dart';
 import 'package:triilab/services/translation_service.dart';
 
@@ -24,7 +25,9 @@ void main() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
-    final Lab3il lab = await Lab3il.initialize();
+    final Lab3il lab = await Lab3il.initialize(
+      apiRoute: const String.fromEnvironment('LAB_API_ROUTE'),
+    );
 
     if (kDebugMode) {
       await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
@@ -50,6 +53,7 @@ void main() async {
           ChangeNotifierProvider.value(value: themeProvider),
           ChangeNotifierProvider(create: (context) => TranslationProvider()),
           Provider.value(value: lab),
+          ChangeNotifierProvider(create: (context) => FullscreenProvider()),
         ],
         child: const MyApp(),
       ),

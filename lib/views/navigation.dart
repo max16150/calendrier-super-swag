@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:triilab/extension.dart';
-import 'package:triilab/views/agenda/agenda.dart';
+import 'package:triilab/providers/fullscreen_provider.dart';
+import 'package:triilab/views/agenda/agenda_screen.dart';
 import 'package:triilab/views/informations/informations.dart';
 import 'package:triilab/views/notifications/notifications.dart';
 import 'package:triilab/views/settings/settings.dart';
+import 'package:triilab/widgets/retractable_appbar.dart';
 
 class Navigation extends StatefulWidget {
   const Navigation({super.key});
@@ -17,7 +20,7 @@ class _NavigationState extends State<Navigation> {
   final PageController _pageController = PageController();
 
   final pagesAndTitles = {
-    'Agenda': const Agenda(),
+    'Agenda': const AgendaScreen(),
     'Notifications': const Notifications(),
     'Informations': const Informations(),
     'Settings': const Settings(),
@@ -38,22 +41,7 @@ class _NavigationState extends State<Navigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        actions: [
-          // Help
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.help),
-          ),
-          // Fullscreen
-          /*
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.fullscreen),
-          ),
-          */
-        ],
+      appBar: RetractableAppBar(
         title: AnimatedSwitcher(
           duration: const Duration(milliseconds: 150),
           switchInCurve: Curves.easeIn,
@@ -72,6 +60,39 @@ class _NavigationState extends State<Navigation> {
             ],
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.help),
+          ),
+          IconButton(
+            onPressed: () {
+              context.read<FullscreenProvider>().toggleFullscreen();
+            },
+            icon: const Icon(Icons.fullscreen),
+          ),
+        ],
+      ),
+      floatingActionButton: ListenableBuilder(
+        listenable: context.read<FullscreenProvider>(),
+        builder: (context, _) {
+          return AnimatedCrossFade(
+            duration: const Duration(milliseconds: 150),
+            crossFadeState:
+                context.read<FullscreenProvider>().isFullscreen ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+            firstChild: Opacity(
+              opacity: 0.8,
+              child: FloatingActionButton(
+                elevation: 0,
+                onPressed: () {
+                  context.read<FullscreenProvider>().toggleFullscreen();
+                },
+                child: const Icon(Icons.fullscreen_exit),
+              ),
+            ),
+            secondChild: const SizedBox.shrink(),
+          );
+        },
       ),
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 150),
@@ -82,33 +103,48 @@ class _NavigationState extends State<Navigation> {
         },
         child: pagesAndTitles.values.elementAt(_currentIndex),
       ),
-      bottomNavigationBar: NavigationBar(
-        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-        selectedIndex: _currentIndex,
-        onDestinationSelected: _onItemTapped,
-        destinations: <Widget>[
-          const NavigationDestination(
-            selectedIcon: Icon(Icons.calendar_month),
-            icon: Icon(Icons.calendar_month),
-            label: 'Agenda',
-          ),
-          const NavigationDestination(
-            selectedIcon: Icon(Icons.notifications_none),
-            icon: Icon(Icons.notifications_none),
-            label: 'Notifications',
-          ),
-          const NavigationDestination(
-            selectedIcon: Icon(Icons.info),
-            icon: Icon(Icons.info),
-            label: 'Informations',
-          ),
-          NavigationDestination(
-            selectedIcon: const Icon(Icons.settings),
-            icon: const Icon(Icons.settings),
-            label: context.tr('settings'),
-          ),
-        ],
-      ),
+      bottomNavigationBar: ListenableBuilder(
+          listenable: context.read<FullscreenProvider>(),
+          builder: (context, _) {
+            return AnimatedCrossFade(
+              duration: const Duration(milliseconds: 150),
+              sizeCurve: Curves.easeInOut,
+              crossFadeState: context.read<FullscreenProvider>().isFullscreen
+                  ? CrossFadeState.showSecond
+                  : CrossFadeState.showFirst,
+              firstChild: NavigationBar(
+                labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+                selectedIndex: _currentIndex,
+                onDestinationSelected: _onItemTapped,
+                destinations: <Widget>[
+                  NavigationDestination(
+                    selectedIcon: const Icon(Icons.calendar_month),
+                    icon: const Icon(Icons.calendar_month),
+                    label: context.tr('agenda'),
+                  ),
+                  NavigationDestination(
+                    selectedIcon: const Icon(Icons.notifications_none),
+                    icon: const Icon(Icons.notifications_none),
+                    label: context.tr('notifications'),
+                  ),
+                  NavigationDestination(
+                    selectedIcon: const Icon(Icons.info),
+                    icon: const Icon(Icons.info),
+                    label: context.tr('informations'),
+                  ),
+                  NavigationDestination(
+                    selectedIcon: const Icon(Icons.settings),
+                    icon: const Icon(Icons.settings),
+                    label: context.tr('settings'),
+                  ),
+                ],
+              ),
+              secondChild: const SizedBox(
+                height: 0,
+                width: double.infinity,
+              ),
+            );
+          }),
     );
   }
 }

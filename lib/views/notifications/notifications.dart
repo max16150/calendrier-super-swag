@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lab_3il/lab_3il.dart';
 import 'package:provider/provider.dart';
 import 'package:triilab/extension.dart';
 import 'package:triilab/providers/theme_provider.dart';
@@ -52,6 +53,13 @@ class _Test extends StatelessWidget {
                   }
                 },
                 child: Text(context.tr('toggle_language')),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  var res = await Provider.of<Lab3il>(context, listen: false).informationsService.getGcu();
+                  debugPrint(res.toString());
+                },
+                child: const Text('GCU'),
               ),
             ],
           ),
