@@ -25,7 +25,6 @@ void main() async {
     );
 
     final Lab3il lab = await Lab3il.initialize();
-
     if (kDebugMode) {
       await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
     } else {
@@ -78,10 +77,12 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: TranslationService.supportedLanguages,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: themeProvider.seedColor, brightness: Brightness.light),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: themeProvider.seedColor, brightness: Brightness.light),
       ),
       darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: themeProvider.seedColor, brightness: Brightness.dark),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: themeProvider.seedColor, brightness: Brightness.dark),
       ),
       home: const Navigation(),
       themeMode: themeProvider.themeMode,
