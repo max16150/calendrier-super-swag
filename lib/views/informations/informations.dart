@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:lab_3il/lab_3il.dart' as lab_api;
+import 'package:provider/provider.dart';
+import 'package:triilab/extension.dart';
 
 class Informations extends StatefulWidget {
   const Informations({super.key});
@@ -11,102 +13,129 @@ class Informations extends StatefulWidget {
 class _Informations extends State<Informations> {
   @override
   Widget build(BuildContext context) {
+    final lab_api.Lab3il lab = context.read<lab_api.Lab3il>();
     return Scaffold(
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 8,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-            child: TitledButton(
-              title: "Salles libres",
-              subtitle: "20 salles libres",
-              onTap: () {},
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-            child: TitledButton(
-              title: "Pause Matinale",
-              subtitle: "12 Groupes concernés",
-              onTap: () {},
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-            child: TitledButton(
-              title: "Pause du midi",
-              subtitle: "18 Groupes concernés",
-              onTap: () {},
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-            child: ListTileExample(
-                heures: "865",
-                salle: "305",
-                groupePlus: "I2FA Groupe 5",
-                groupeMoins: "I1 FA Groupe1"),
-          ),
-          Container(
-            constraints: const BoxConstraints(minWidth: 200, minHeight: 60),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-              child: Material(
-                borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                color: Colors.grey,
-                child: InkWell(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+      body: FutureBuilder<lab_api.Informations>(
+          future: lab.informationsService.getInformations(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(context.tr("error")),
+              );
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            }
+            final lab_api.Informations infos = snapshot.data!;
+            return Column(
+              children: [
+                const SizedBox(
+                  height: 8,
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                  child: TitledButton(
+                    title: "Salles libres",
+                    subtitle: "${infos.freeRoomsNow.length} salles libres",
+                    onTap: () {},
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                  child: TitledButton(
+                    title: "Pause Matinale",
+                    subtitle: "${infos.morningBreak} Groupes concernés",
+                    onTap: () {},
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                  child: TitledButton(
+                    title: "Pause du midi",
+                    subtitle: "${infos.launchBreak} Groupes concernés",
+                    onTap: () {},
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                  child: ListTileExample(
+                      heures: "${infos.totalCoursesTimeThisWeek / 60}",
+                      salle: infos.mostUsedRoomThisWeek
+                          .map((e) => e.room)
+                          .join(", "),
+                      groupePlus: infos.mostCoursedGroupThisWeek
+                          .map((e) =>
+                              e.groupId) // TODO: utiliser le nom des groupes
+                          .join(", "),
+                      groupeMoins: infos.leastCoursedGroupThisWeek
+                          .map((e) => e.groupId)
+                          .join(", ")),
+                ),
+                Container(
+                  constraints:
+                      const BoxConstraints(minWidth: 200, minHeight: 60),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    child: Material(
+                      borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                      color: Colors.grey,
+                      child: InkWell(
+                        child: Row(
                           children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 5, vertical: 1),
-                              child: Text("Notes"),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 5, vertical: 1),
+                                    child: Text("Notes"),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
-          Container(
-            constraints: const BoxConstraints(minWidth: 200, minHeight: 60),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-              child: Material(
-                borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                color: Colors.grey,
-                child: InkWell(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                Container(
+                  constraints:
+                      const BoxConstraints(minWidth: 200, minHeight: 60),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    child: Material(
+                      borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                      color: Colors.grey,
+                      child: InkWell(
+                        child: Row(
                           children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 5, vertical: 1),
-                              child: Text("Moodle"),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 5, vertical: 1),
+                                    child: Text("Moodle"),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
-        ],
-      ),
+              ],
+            );
+          }),
     );
   }
 }
@@ -180,7 +209,7 @@ class ListTileExample extends StatelessWidget {
       children: <Widget>[
         ListTile(
           leading: const Icon(Icons.timelapse_outlined),
-          title: Text('$heures Heures'),
+          title: Text('$heures' ' Heures'),
           subtitle: const Text('Heures de cours cumulés cette semaine'),
         ),
         ListTile(
@@ -189,9 +218,10 @@ class ListTileExample extends StatelessWidget {
           subtitle: const Text('Salle la plus utilisée cette semaine'),
         ),
         ListTile(
-          leading: const Icon(Icons.room_preferences_outlined),
-          title: Text(salle),
-          subtitle: const Text('Salle la plus utilisée cette semaine'),
+          leading: const Icon(Icons.more_time_outlined),
+          title: Text(groupePlus),
+          subtitle: const Text(
+              "Classes(s) avec le moins d'heures de cours cette semaine"),
         ),
         ListTile(
           leading: const Icon(Icons.bedtime_off_outlined),

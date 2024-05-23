@@ -8,3 +8,5 @@ close: Fermer
 course_from: De {time} le {date}
 course_to: à {time} le {date}
 rooms: Salles
+
+hours: "Heures"
