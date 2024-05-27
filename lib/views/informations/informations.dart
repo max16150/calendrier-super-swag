@@ -4,6 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:triilab/extension.dart';
 import './widgets/titledButton.dart';
 import './widgets/listView.dart';
+import './freeRooms.dart';
+import './lunchBreak.dart';
+import './MorningBreak.dart';
 
 class Informations extends StatefulWidget {
   const Informations({super.key});
@@ -40,7 +43,13 @@ class _Informations extends State<Informations> {
                   child: TitledButton(
                     title: "Salles libres",
                     subtitle: "${infos.freeRoomsNow.length} salles libres",
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const FreeRooms()),
+                      );
+                    },
                   ),
                 ),
                 Padding(
@@ -49,7 +58,13 @@ class _Informations extends State<Informations> {
                   child: TitledButton(
                     title: "Pause Matinale",
                     subtitle: "${infos.morningBreak} Groupes concernés",
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MorningBreak()),
+                      );
+                    },
                   ),
                 ),
                 Padding(
@@ -58,7 +73,13 @@ class _Informations extends State<Informations> {
                   child: TitledButton(
                     title: "Pause du midi",
                     subtitle: "${infos.launchBreak} Groupes concernés",
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LunchBreak()),
+                      );
+                    },
                   ),
                 ),
                 Padding(
