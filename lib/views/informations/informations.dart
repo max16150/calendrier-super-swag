@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lab_3il/lab_3il.dart' as lab_api;
 import 'package:provider/provider.dart';
 import 'package:triilab/extension.dart';
+import './widgets/titledButton.dart';
+import './widgets/listView.dart';
 
 class Informations extends StatefulWidget {
   const Informations({super.key});
@@ -34,7 +36,7 @@ class _Informations extends State<Informations> {
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                   child: TitledButton(
                     title: "Salles libres",
                     subtitle: "${infos.freeRoomsNow.length} salles libres",
@@ -43,7 +45,7 @@ class _Informations extends State<Informations> {
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                   child: TitledButton(
                     title: "Pause Matinale",
                     subtitle: "${infos.morningBreak} Groupes concernés",
@@ -52,7 +54,7 @@ class _Informations extends State<Informations> {
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                   child: TitledButton(
                     title: "Pause du midi",
                     subtitle: "${infos.launchBreak} Groupes concernés",
@@ -61,7 +63,7 @@ class _Informations extends State<Informations> {
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                   child: ListTileExample(
                       heures: "${infos.totalCoursesTimeThisWeek / 60}",
                       salle: infos.mostUsedRoomThisWeek
@@ -75,163 +77,35 @@ class _Informations extends State<Informations> {
                           .map((e) => e.groupId)
                           .join(", ")),
                 ),
-                Container(
-                  constraints:
-                      const BoxConstraints(minWidth: 200, minHeight: 60),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                    child: Material(
-                      borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                      color: Colors.grey,
-                      child: InkWell(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 5, vertical: 1),
-                                    child: Text("Notes"),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(400, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
                       ),
                     ),
+                    onPressed: () {},
+                    child: const Text("Notes"),
                   ),
                 ),
-                Container(
-                  constraints:
-                      const BoxConstraints(minWidth: 200, minHeight: 60),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                    child: Material(
-                      borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                      color: Colors.grey,
-                      child: InkWell(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 5, vertical: 1),
-                                    child: Text("Moodle"),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(400, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
                       ),
                     ),
+                    onPressed: () {},
+                    child: const Text("Moodle"),
                   ),
                 ),
               ],
             );
           }),
-    );
-  }
-}
-
-class TitledButton extends StatelessWidget {
-  const TitledButton({
-    super.key,
-    required this.title,
-    required this.subtitle,
-    this.onTap,
-  });
-
-  final String title;
-  final String subtitle;
-  final void Function()? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-      color: Colors.grey,
-      child: InkWell(
-        onTap: onTap,
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-                    child: Text(title),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-                    child: Text(subtitle),
-                  ),
-                ],
-              ),
-            ),
-            const Icon(Icons.arrow_right_outlined)
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ListTileExample extends StatelessWidget {
-  const ListTileExample({
-    super.key,
-    required this.heures,
-    required this.salle,
-    required this.groupePlus,
-    required this.groupeMoins,
-  });
-
-  final String heures;
-  final String salle;
-  final String groupePlus;
-  final String groupeMoins;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: true, // Added to prevent unbounded height error
-      physics:
-          const NeverScrollableScrollPhysics(), // Prevents the ListView from being scrollable
-      children: <Widget>[
-        ListTile(
-          leading: const Icon(Icons.timelapse_outlined),
-          title: Text('$heures' ' Heures'),
-          subtitle: const Text('Heures de cours cumulés cette semaine'),
-        ),
-        ListTile(
-          leading: const Icon(Icons.room_preferences_outlined),
-          title: Text(salle),
-          subtitle: const Text('Salle la plus utilisée cette semaine'),
-        ),
-        ListTile(
-          leading: const Icon(Icons.more_time_outlined),
-          title: Text(groupePlus),
-          subtitle: const Text(
-              "Classes(s) avec le moins d'heures de cours cette semaine"),
-        ),
-        ListTile(
-          leading: const Icon(Icons.bedtime_off_outlined),
-          title: Text(groupeMoins),
-          subtitle: const Text(
-              "Classes(s) avec le moins d'heures de cours cette semaine"),
-          isThreeLine: true,
-        ),
-        const Divider(height: 0),
-      ],
     );
   }
 }
