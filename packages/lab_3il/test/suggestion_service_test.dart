@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lab_3il/lab_3il.dart';
 
@@ -8,8 +7,7 @@ void main() {
 
     setUpAll(() async {
       lab3il = await Lab3il.initialize(
-        //client: Dio(BaseOptions(baseUrl: 'http://localhost/api/v1')),
-        client: Dio(BaseOptions(baseUrl: 'https://3ilab.fr/api/v1')),
+        apiRoute: 'https://3ilab.fr/api/v1',
       );
     });
 

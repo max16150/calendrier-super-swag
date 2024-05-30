@@ -6,6 +6,10 @@
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",
+            "args": [
+                "--dart-define-from-file=config/dev/.env",
+                "--web-browser-flag=--disable-web-security",
+            ]
         },
         {
             "name": "App (profile mode)",
@@ -13,6 +17,9 @@
             "type": "dart",
             "flutterMode": "profile",
             "program": "lib/main.dart",
+            "args": [
+                "--dart-define-from-file=config/dev/.env",
+            ]
         },
         {
             "name": "App (release mode)",
@@ -20,6 +27,9 @@
             "type": "dart",
             "flutterMode": "release",
             "program": "lib/main.dart",
+            "args": [
+                "--dart-define-from-file=config/dev/.env",
+            ]
         }
     ]
 }
