@@ -20,9 +20,9 @@ class Lab3il {
 
   //private constructor
   Lab3il._({
-    Dio? client,
+    required Dio client,
   }) {
-    _client = client ?? Dio(BaseOptions(baseUrl: apiRoute));
+    _client = client;
     agendaService = AgendaService(this);
     informationsService = InformationService(this);
     notificationsService = NotificationService(this);
@@ -32,12 +32,14 @@ class Lab3il {
   set acceptLanguage(String language) => _client.options.headers['Accept-Language'] = language;
 
   static Future<Lab3il> initialize({
+    required String apiRoute,
     Dio? client,
     String? acceptLanguage,
   }) async {
     await Future.delayed(const Duration(milliseconds: 50));
-    final lab = Lab3il._(client: client);
-    lab.acceptLanguage = acceptLanguage ?? Platform.localeName;
+    final clt = client ?? Dio(BaseOptions(baseUrl: apiRoute));
+    final lab = Lab3il._(client: clt);
+    lab.acceptLanguage = acceptLanguage ?? Intl.systemLocale;
     return lab;
   }
 }

@@ -2,6 +2,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
 class StorageService {
+  Future<String?> getString(StorageKeyString key) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(key.toString());
+  }
+
+  Future<void> saveString(StorageKeyString key, String value) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(key.toString(), value);
+  }
+
   Future<void> saveThemeMode(ThemeMode themeMode) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool('isDarkMode', themeMode == ThemeMode.dark);
@@ -32,4 +42,8 @@ class StorageService {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('languageCode');
   }
+}
+
+enum StorageKeyString {
+  selectedAgenda,
 }

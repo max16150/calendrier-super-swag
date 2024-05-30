@@ -7,8 +7,8 @@
             "type": "dart",
             "program": "lib/main.dart",
             "args": [
-                "--dart-define",
-                "API_ROUTE=https://3ilab.fr/api/v1",
+                "--dart-define-from-file=config/dev/.env",
+                "--web-browser-flag=--disable-web-security",
             ]
         },
         {
@@ -17,6 +17,9 @@
             "type": "dart",
             "flutterMode": "profile",
             "program": "lib/main.dart",
+            "args": [
+                "--dart-define-from-file=config/dev/.env",
+            ]
         },
         {
             "name": "App (release mode)",
@@ -24,6 +27,9 @@
             "type": "dart",
             "flutterMode": "release",
             "program": "lib/main.dart",
+            "args": [
+                "--dart-define-from-file=config/dev/.env",
+            ]
         }
     ]
 }

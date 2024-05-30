@@ -47,6 +47,8 @@ dependencies:
   yaml: ^3.1.2
   syncfusion_flutter_calendar: ^25.2.3
   gap: ^3.0.1
+  equatable: ^2.0.5
+  collection: ^1.18.0
   lab_3il: 
     path: packages/lab_3il
 

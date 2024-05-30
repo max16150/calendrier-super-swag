@@ -3,8 +3,12 @@ toggle_theme: "Change theme"
 toggle_language: "Change language"
 agenda: "Agenda"
 settings: "Settings"
+informations: "Informations"
+notifications: "Notifications"
 close: "Close"
 
 course_from: "From {time} on {date}"
 course_to: "to {time} on {date}"
 rooms: "Rooms"
+
+hours: "Hours"
