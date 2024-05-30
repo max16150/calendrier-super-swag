@@ -23,7 +23,9 @@ class Suggestion extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Suggestion'),
           centerTitle: true,
-          backgroundColor: themeProvider.seedColor,
+           backgroundColor: themeProvider.themeMode == ThemeMode.dark
+            ? themeProvider.seedColor // couleur de base pour le thème sombre
+            : Theme.of(context).colorScheme.primary, // Couleur par défaut pour le thème clair
         ),
         body: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
@@ -95,7 +97,6 @@ class Suggestion extends StatelessWidget {
             )
           : CustomTextStyles.bodyMediumGray400(context),
       hintText: "Destinataire",
-      hintStyle: CustomTextStyles.bodyLargeOnPrimaryContainer(context),
     );
   }
 
@@ -144,9 +145,7 @@ class Suggestion extends StatelessWidget {
             )
           : CustomTextStyles.bodyMediumGray400(context),
       hintText: "Contenu",
-      //textInputAction: TextInputAction.done,
-      //textInputType: TextInputType.visiblePassword,
-      //obscureText: true,
+
       contentPadding: EdgeInsets.fromLTRB(16, 22, 16, 158),
     );
   }

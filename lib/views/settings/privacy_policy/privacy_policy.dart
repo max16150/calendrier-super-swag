@@ -14,11 +14,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
     Lab3il lab = Provider.of<Lab3il>(context);
 
 
-    Future<String> getPrivacyPolicyContent() async {
-      PrivacyPolicy privacyPolicy = await lab.informationsService.getPrivacyPolicy();
-      return privacyPolicy.content;
-    }
-
     // Utilisation de FutureBuilder pour laffiachage du content
     return Scaffold(
       appBar: AppBar(
@@ -34,9 +29,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // ...
-            FutureBuilder<String>(
-              future: getPrivacyPolicyContent(),
-              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            FutureBuilder<PrivacyPolicy>(
+              future: lab.informationsService.getPrivacyPolicy(),
+              builder: (BuildContext context, AsyncSnapshot<PrivacyPolicy> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
@@ -53,7 +48,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                          text: snapshot.data,
+                          text: snapshot.data?.content,
                         ),
                         // ...
                       ],
