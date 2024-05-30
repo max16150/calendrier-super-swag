@@ -5,6 +5,7 @@ import 'package:triilab/services/translation_service.dart';
 
 extension AppContext on BuildContext {
   ColorScheme get colors => Theme.of(this).colorScheme;
+  TextTheme get textTheme => Theme.of(this).textTheme;
 }
 
 extension TranslationServiceExtension on BuildContext {
