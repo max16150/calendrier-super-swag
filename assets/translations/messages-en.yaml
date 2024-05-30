@@ -10,3 +10,5 @@ close: "Close"
 course_from: "From {time} on {date}"
 course_to: "to {time} on {date}"
 rooms: "Rooms"
+
+hours: "Hours"
