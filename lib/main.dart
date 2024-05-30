@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -9,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:lab_3il/lab_3il.dart';
 import 'package:provider/provider.dart';
 import 'package:triilab/firebase_options.dart';
+import 'package:triilab/providers/agenda_provider.dart';
 import 'package:triilab/providers/fullscreen_provider.dart';
 import 'package:triilab/services/storage_service.dart';
 import 'package:triilab/services/translation_service.dart';
@@ -29,37 +31,52 @@ void main() async {
       apiRoute: const String.fromEnvironment('LAB_API_ROUTE'),
     );
 
-    if (kDebugMode) {
-      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
-    } else {
-      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+    if (!kIsWeb) {
+      if (kDebugMode) {
+        await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
+      } else {
+        await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+      }
+
+      FlutterError.onError = (errorDetails) {
+        FirebaseCrashlytics.instance.recordFlutterError(errorDetails);
+      };
+
+      PlatformDispatcher.instance.onError = (error, stack) {
+        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+        return true;
+      };
     }
-
-    FlutterError.onError = (errorDetails) {
-      FirebaseCrashlytics.instance.recordFlutterError(errorDetails);
-    };
-
-    PlatformDispatcher.instance.onError = (error, stack) {
-      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-      return true;
-    };
 
     ThemeProvider themeProvider = await ThemeProvider.create();
     Intl.defaultLocale = await StorageService().getLanguageCode() ?? 'fr';
 
+    final List<ClassGroup> classGroups = await lab.informationsService.getSavedGroups();
+    String? selectedAgenda = await StorageService().getString(StorageKeyString.selectedAgenda);
+    ClassGroup? selectedGroup = selectedAgenda == null
+        ? null
+        : classGroups.firstWhereOrNull(
+            (element) => element.id == int.tryParse(selectedAgenda),
+          );
+
+    final AgendaProvider agendaProvider = AgendaProvider(selectedGroup: selectedGroup);
+
     runApp(
       MultiProvider(
         providers: [
+          Provider.value(value: lab),
+          ChangeNotifierProvider.value(value: agendaProvider),
           ChangeNotifierProvider.value(value: themeProvider),
           ChangeNotifierProvider(create: (context) => TranslationProvider()),
-          Provider.value(value: lab),
           ChangeNotifierProvider(create: (context) => FullscreenProvider()),
         ],
         child: const MyApp(),
       ),
     );
   }, (error, stackTrace) async {
-    await FirebaseCrashlytics.instance.recordError(error, stackTrace);
+    if (!kIsWeb) {
+      await FirebaseCrashlytics.instance.recordError(error, stackTrace);
+    }
   });
 }
 

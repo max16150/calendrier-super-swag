@@ -9,13 +9,19 @@ class EventDataSource extends CalendarDataSource {
   final Color normalCourseBackground;
   final Color specialCourseBackground;
   final Color canceledCourseBackground;
+  final Color deletedCourseBackground;
+  final ClassGroup classGroup;
 
-  EventDataSource(
-    List<Event> source, {
+  final List<String> _fetchedDates = [];
+
+  EventDataSource({
+    required List<Event> source,
     required this.lab,
+    required this.classGroup,
     required this.normalCourseBackground,
     required this.specialCourseBackground,
     required this.canceledCourseBackground,
+    required this.deletedCourseBackground,
   }) {
     super.appointments = source;
   }
@@ -57,12 +63,17 @@ class EventDataSource extends CalendarDataSource {
 
   @override
   Future<void> handleLoadMore(DateTime startDate, DateTime endDate) async {
-    debugPrint('handleLoadMore : $startDate - $endDate');
     final start = DateTime(startDate.year, startDate.month, startDate.day, 0, 0, 0).toUtc();
     final end = DateTime(endDate.year, endDate.month, endDate.day, 23, 59, 59).toUtc();
 
+    if (_fetchedDates.contains(start.toString())) {
+      notifyListeners(CalendarDataSourceAction.add, []);
+      return;
+    }
+    _fetchedDates.add(start.toString());
+
     final Agenda agenda = await lab.agendaService.getAgenda(
-      groupId: "43",
+      groupId: classGroup.id.toString(),
       start: start,
       end: end,
     );
@@ -72,30 +83,11 @@ class EventDataSource extends CalendarDataSource {
       normalCourseBackground: normalCourseBackground,
       specialCourseBackground: specialCourseBackground,
       canceledCourseBackground: canceledCourseBackground,
+      deletedCourseBackground: deletedCourseBackground,
     );
 
-    /*
-    DateTime date = DateTime(startDate.year, startDate.month, startDate.day);
-    DateTime appEndDate = DateTime(endDate.year, endDate.month, endDate.day, 23, 59, 59);
-    while (date.isBefore(appEndDate)) {
-      final List<Event>? data = _dataCollection[date];
-      if (data == null) {
-        date = date.add(const Duration(days: 1));
-        continue;
-      }
-
-      for (final Event meeting in data) {
-        if (appointments!.contains(meeting)) {
-          continue;
-        }
-
-        meetings.add(meeting);
-      }
-      date = date.add(const Duration(days: 1));
-    }
-
-    appointments!.addAll(meetings);
-    */
+    // Keep only non deleted courses
+    courses.removeWhere((course) => course.course.deletedAt != null);
 
     // create a set of appointments and courses to avoid duplicates
     final Set<Event> coursesSet = {};

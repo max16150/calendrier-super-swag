@@ -8,6 +8,7 @@
             "program": "lib/main.dart",
             "args": [
                 "--dart-define-from-file=config/dev/.env",
+                "--web-browser-flag=--disable-web-security",
             ]
         },
         {

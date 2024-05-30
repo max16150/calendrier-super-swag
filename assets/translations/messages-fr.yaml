@@ -10,3 +10,7 @@ close: Fermer
 course_from: De {time} le {date}
 course_to: à {time} le {date}
 rooms: Salles
+
+select_agenda: Sélectionnez un groupe pour afficher son agenda. Vous pouvez en changer à tout moment.
+select: Sélectionner
+cancel: Annuler

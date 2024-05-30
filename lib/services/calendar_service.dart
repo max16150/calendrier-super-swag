@@ -9,25 +9,30 @@ class CalendarService {
     required normalCourseBackground,
     required specialCourseBackground,
     required canceledCourseBackground,
+    required deletedCourseBackground,
   }) {
     final List<Event> meetings = <Event>[];
 
     for (Course course in courses) {
       final bool isCanceled = course.extra.contains('canceled');
       final bool isColored = course.extra.contains('colored');
+      final bool isDeleted = course.deletedAt != null;
 
       meetings.add(
         Event(
           course.title,
           course.startAt.toLocal(),
           course.endAt.toLocal(),
-          isCanceled
-              ? canceledCourseBackground
-              : isColored
-                  ? specialCourseBackground
-                  : normalCourseBackground,
+          isDeleted
+              ? deletedCourseBackground
+              : isCanceled
+                  ? canceledCourseBackground
+                  : isColored
+                      ? specialCourseBackground
+                      : normalCourseBackground,
           false,
           course.rooms,
+          course,
         ),
       );
     }

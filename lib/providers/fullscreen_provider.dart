@@ -6,7 +6,7 @@ class FullscreenProvider extends ChangeNotifier {
 
   bool get isFullscreen => _isFullscreen;
 
-  void toggleFullscreen() {
+  void toggle() {
     _isFullscreen = !_isFullscreen;
     if (_isFullscreen) {
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
