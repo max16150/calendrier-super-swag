@@ -1,0 +1,74 @@
+randomize_seed_color: Couleur aléatoire
+toggle_theme: Changer de thème
+toggle_language: Changer de langue
+agenda: Agenda
+settings: Paramètres
+informations: Informations
+notifications: Notifications
+close: Fermer
+error_occured: Une erreur est survenue
+
+course_from: De {time} le {date}
+course_to: à {time} le {date}
+rooms: Salles
+
+select_agenda: Sélectionnez un groupe pour afficher son agenda. Vous pouvez en changer à tout moment.
+select: Sélectionner
+cancel: Annuler
+send: Envoyer
+
+gcu: Conditions générales d'utilisation
+privacy_policy: Politique de confidentialité
+suggest_an_improvement: Suggérer une amélioration
+suggestion: Suggestion
+recipient: Destinataire
+sender: Expéditeur
+subject: Sujet
+message: Message
+suggestion_description: "Pour suggérer une amélioration de l’application, déclarer un bug ou un problème, vous pouvez passer par le formulaire suivant ou directement en nous envoyant un mail à l’adresse : contact@3ilab.fr"
+
+application_settings: Application
+dark_theme: Mode sombre
+choose_dark_theme: Activer le mode sombre pour protéger vos yeux et économiser de la batterie
+main_color: Couleur principale
+choose_main_color: Choisissez la couleur principale de l'application
+language: Langue
+choose_language: Choisissez la langue de l'application (français ou anglais)
+
+notifications_settings: Notifications
+new_weeks: Nouvelles semaines
+choose_new_weeks: Je souhaite être notifié quand une ou plusieurs semaines de cours sont ajoutées aux emplois du temps de mes groupes suivis
+edits: Modifications
+choose_edits: Je souhaite être notifié quand mes emplois du temps suivis subissent des modifications (ajout de cours, modification de salle, annulation, ...)
+
+timezone: Fuseau horaire
+version: Version
+
+you_are_up_to_date: Vous êtes à jour !
+loading: Chargement...
+feature_coming_soon: Cette fonctionnalité sera disponible dans une prochaine mise à jour !
+
+free_rooms: Salles libres
+free_rooms_count: 
+  zero: "Aucune salle libre"
+  one: "{count} salle libre"
+  more: "{count} salles libres"
+
+lunch_break: Pause du midi
+morning_break: Pause matinale
+concerned_group_count:
+  zero: "Aucun groupe concerné"
+  one: "{count} groupe concerné"
+  more: "{count} groupes concernés"
+
+notes_absences: Notes et absences
+moodle: Moodle
+
+cumulated_courses_hours_this_week: Heures de cours cumulées cette semaine
+most_used_room_this_week: Salle la plus utilisée cette semaine
+most_working_groups_this_week: Classes(s) avec le plus d'heures de cours cette semaine
+less_working_groups_this_week: Classes(s) avec le moins d'heures de cours cette semaine
+
+hours: "{count} heures"
+suggestion_sent: Votre suggestion a bien été envoyée ! Merci =)
+

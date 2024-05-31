@@ -1,0 +1,74 @@
+randomize_seed_color: Randomize Seed Color
+toggle_theme: Toggle Theme
+toggle_language: Toggle Language
+agenda: Agenda
+settings: Settings
+informations: Information
+notifications: Notifications
+close: Close
+error_occured: An error occurred
+
+course_from: From {time} on {date}
+course_to: to {time} on {date}
+rooms: Rooms
+
+select_agenda: Select a group to view its agenda. You can change it at any time.
+select: Select
+cancel: Cancel
+send: Send
+
+gcu: Terms of Use
+privacy_policy: Privacy Policy
+suggest_an_improvement: Suggest an Improvement
+suggestion: Suggestion
+recipient: Recipient
+sender: Sender
+subject: Subject
+message: Message
+suggestion_description: "To suggest an improvement to the application, report a bug or an issue, you can use the following form or directly send us an email at: contact@3ilab.fr"
+
+application_settings: Application
+dark_theme: Dark Mode
+choose_dark_theme: Enable dark mode to protect your eyes and save battery
+main_color: Main Color
+choose_main_color: Choose the main color of the application
+language: Language
+choose_language: Choose the application language (French or English)
+
+notifications_settings: Notifications
+new_weeks: New Weeks
+choose_new_weeks: I want to be notified when one or more weeks of courses are added to the schedules of my followed groups
+edits: Edits
+choose_edits: I want to be notified when my followed schedules undergo changes (addition of courses, room changes, cancellations, ...)
+
+timezone: Timezone
+version: Version
+
+you_are_up_to_date: You are up to date!
+loading: Loading...
+feature_coming_soon: This feature will be available in a future update!
+
+free_rooms: Free Rooms
+free_rooms_count: 
+  zero: "No free room"
+  one: "{count} free room"
+  more: "{count} free rooms"
+
+lunch_break: Lunch Break
+morning_break: Morning Break
+concerned_group_count:
+  zero: "No group concerned"
+  one: "{count} group concerned"
+  more: "{count} groups concerned"
+
+notes_absences: Notes and Absences
+moodle: Moodle
+
+cumulated_courses_hours_this_week: Cumulative Course Hours This Week
+most_used_room_this_week: Most Used Room This Week
+most_working_groups_this_week: Class(es) with the Most Course Hours This Week
+less_working_groups_this_week: Class(es) with the Least Course Hours This Week
+
+hours: "{count} hours"
+suggestion_sent: Your suggestion has been sent! Thank you =)
+

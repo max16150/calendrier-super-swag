@@ -1,16 +1,16 @@
-# my_chat
+# Calendrier Super Swag
 
-A new Flutter project.
+Toute l'information de ton école en une seule application !
 
-## Getting Started
+## Débuter avec Flutter
 
-This project is a starting point for a Flutter application.
+- [Créez votre première application Flutter](https://docs.flutter.dev/get-started/codelab)
+- [Exemples utiles](https://docs.flutter.dev/cookbook)
+- [Documentation en ligne](https://docs.flutter.dev/)
 
-A few resources to get you started if this is your first Flutter project:
+## Configuration firebase
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Ce projet utilise les fonctionnalités suivantes de firebase :
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [firebase_crashlytics](https://firebase.google.com/docs/crashlytics/get-started?platform=flutter)
+- [firebase_messaging](https://firebase.google.com/docs/cloud-messaging/flutter/client?authuser=0)
