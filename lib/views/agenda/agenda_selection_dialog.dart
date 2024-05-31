@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lab_3il/lab_3il.dart';
 import 'package:provider/provider.dart';
+import 'package:triilab/extension.dart';
 import 'package:triilab/providers/agenda_provider.dart';
 
 class AgendaSelectionDialog extends StatefulWidget {
@@ -26,7 +27,7 @@ class _AgendaSelectionDialogState extends State<AgendaSelectionDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Annuler'),
+          child: Text(context.tr('cancel')),
         ),
         ValueListenableBuilder<ClassGroup?>(
           valueListenable: selectedGroupNotifier,
@@ -37,7 +38,7 @@ class _AgendaSelectionDialogState extends State<AgendaSelectionDialog> {
                     context.read<AgendaProvider>().setSelectedGroup(selectedGroup);
                     Navigator.of(context).pop();
                   },
-            child: const Text('Valider'),
+            child: Text(context.tr('select')),
           ),
         ),
       ],

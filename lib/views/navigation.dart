@@ -22,10 +22,10 @@ class _NavigationState extends State<Navigation> {
   final PageController _pageController = PageController();
 
   final pagesAndTitles = {
-    'Agenda': const AgendaScreen(),
-    'Notifications': const Notifications(),
-    'Informations': const Informations(),
-    'Settings': const Settings(),
+    'agenda': const AgendaScreen(),
+    'notifications': const Notifications(),
+    'informations': const Informations(),
+    'settings': const Settings(),
   };
 
   @override

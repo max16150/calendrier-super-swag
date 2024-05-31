@@ -59,13 +59,6 @@ class _AgendaViewState extends State<AgendaView> {
                 Text(context.tr('rooms')),
                 const Gap(4),
                 for (final room in event.rooms) Text(room),
-                const Gap(4),
-                const Divider(),
-                const Gap(8),
-                if (event.course.deletedAt != null)
-                  Text('Deleted at : ${DateFormat.yMMMMEEEEd().format(event.course.deletedAt!)}'),
-                const Gap(4),
-                Text(event.course.toString())
               ],
             ),
             actions: [

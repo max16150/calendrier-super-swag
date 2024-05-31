@@ -15,7 +15,7 @@ class AppRetractableBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(56.0);
 
-  final Map<String, StatelessWidget> pagesAndTitles;
+  final Map<String, Widget> pagesAndTitles;
   final List<Widget> actions;
   final int currentIndex;
 
@@ -41,7 +41,7 @@ class AppRetractableBar extends StatelessWidget implements PreferredSizeWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      pagesAndTitles.keys.elementAt(currentIndex),
+                      context.tr(pagesAndTitles.keys.elementAt(currentIndex)),
                     ),
                     if (currentIndex == 0)
                       Consumer<AgendaProvider>(

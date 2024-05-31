@@ -1,132 +1,121 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:lab_3il/lab_3il.dart' as lab_api;
 import 'package:provider/provider.dart';
 import 'package:triilab/extension.dart';
-import './widgets/titledButton.dart';
-import './widgets/listView.dart';
-import './freeRooms.dart';
-import './lunchBreak.dart';
-import './MorningBreak.dart';
+import 'package:triilab/views/informations/morning_break.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'widgets/titled_button.dart';
+import 'widgets/general_informations_list.dart';
+import 'free_rooms.dart';
+import 'lunch_break.dart';
 
-class Informations extends StatefulWidget {
+class Informations extends StatelessWidget {
   const Informations({super.key});
 
-  @override
-  State<Informations> createState() => _Informations();
-}
+  Future<(lab_api.Informations, List<lab_api.ClassGroup>)> getInformations({required lab_api.Lab3il lab}) async {
+    final lab_api.Informations infos = await lab.informationsService.getInformations();
+    final List<lab_api.ClassGroup> groups = await lab.informationsService.getSavedGroups();
+    return (infos, groups);
+  }
 
-class _Informations extends State<Informations> {
   @override
   Widget build(BuildContext context) {
     final lab_api.Lab3il lab = context.read<lab_api.Lab3il>();
-    return Scaffold(
-      body: FutureBuilder<lab_api.Informations>(
-          future: lab.informationsService.getInformations(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Center(
-                child: Text(context.tr("error")),
-              );
-            }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            }
-            final lab_api.Informations infos = snapshot.data!;
-            return Column(
+    return FutureBuilder(
+      future: getInformations(lab: lab),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text(context.tr('error_occured')),
+          );
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        }
+
+        final lab_api.Informations infos = snapshot.data!.$1;
+        final List<lab_api.ClassGroup> groups = snapshot.data!.$2;
+
+        final String cumulatedCourseHours = "${infos.totalCoursesTimeThisWeek / 60}";
+        final String mostUsedRoom = infos.mostUsedRoomThisWeek.map((e) => e.room).join(", ");
+        final String mostWorkingGroups =
+            infos.mostCoursedGroupThisWeek.map((e) => groups.firstWhere((g) => g.id == e.groupId).name).join(", ");
+        final String lessWorkingGroups =
+            infos.leastCoursedGroupThisWeek.map((e) => groups.firstWhere((g) => g.id == e.groupId).name).join(", ");
+
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
               children: [
-                const SizedBox(
-                  height: 8,
+                TitledButton(
+                  title: context.tr('free_rooms'),
+                  subtitle: context.tr('free_rooms_count', count: infos.freeRoomsNow.length),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const FreeRooms()),
+                    );
+                  },
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                  child: TitledButton(
-                    title: "Salles libres",
-                    subtitle: "${infos.freeRoomsNow.length} salles libres",
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const FreeRooms()),
-                      );
-                    },
-                  ),
+                const Gap(16),
+                TitledButton(
+                  title: context.tr('morning_break'),
+                  subtitle: context.tr('concerned_group_count', count: infos.morningBreak),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const MorningBreak()),
+                    );
+                  },
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                  child: TitledButton(
-                    title: "Pause Matinale",
-                    subtitle: "${infos.morningBreak} Groupes concernés",
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MorningBreak()),
-                      );
-                    },
-                  ),
+                const Gap(16),
+                TitledButton(
+                  title: context.tr('lunch_break'),
+                  subtitle: context.tr('concerned_group_count', count: infos.launchBreak),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const LunchBreak()),
+                    );
+                  },
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                  child: TitledButton(
-                    title: "Pause du midi",
-                    subtitle: "${infos.launchBreak} Groupes concernés",
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LunchBreak()),
-                      );
-                    },
-                  ),
+                const Gap(16),
+                const Divider(height: 0, indent: 16, endIndent: 16),
+                const Gap(16),
+                GeneralInformationsList(
+                  cumulatedCourseHours: cumulatedCourseHours,
+                  mostUsedRoom: mostUsedRoom,
+                  mostWorkingGroups: mostWorkingGroups,
+                  lessWorkingGroups: lessWorkingGroups,
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                  child: ListTileExample(
-                      heures: "${infos.totalCoursesTimeThisWeek / 60}",
-                      salle: infos.mostUsedRoomThisWeek
-                          .map((e) => e.room)
-                          .join(", "),
-                      groupePlus: infos.mostCoursedGroupThisWeek
-                          .map((e) =>
-                              e.groupId) // TODO: utiliser le nom des groupes
-                          .join(", "),
-                      groupeMoins: infos.leastCoursedGroupThisWeek
-                          .map((e) => e.groupId)
-                          .join(", ")),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
+                const Gap(16),
+                SizedBox(
+                  width: double.infinity,
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(400, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                    ),
-                    onPressed: () {},
-                    child: const Text("Notes"),
+                    onPressed: () {
+                      final Uri url = Uri.parse('https://eleves.groupe3il.fr/index.php/notes-et-absences');
+                      launchUrl(url, mode: LaunchMode.externalApplication);
+                    },
+                    child: Text(context.tr('notes_absences')),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
+                SizedBox(
+                  width: double.infinity,
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(400, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                    ),
-                    onPressed: () {},
-                    child: const Text("Moodle"),
+                    onPressed: () async {
+                      final Uri url = Uri.parse('https://moodle.3il.fr');
+                      launchUrl(url, mode: LaunchMode.externalApplication);
+                    },
+                    child: Text(context.tr('moodle')),
                   ),
                 ),
               ],
-            );
-          }),
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -61,6 +61,7 @@ void main() async {
 
     final AgendaProvider agendaProvider = AgendaProvider(selectedGroup: selectedGroup);
 
+    lab.acceptLanguage = Intl.getCurrentLocale();
     runApp(
       MultiProvider(
         providers: [
@@ -99,12 +100,10 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: TranslationService.supportedLanguages,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: themeProvider.seedColor, brightness: Brightness.light),
+        colorScheme: ColorScheme.fromSeed(seedColor: themeProvider.seedColor, brightness: Brightness.light),
       ),
       darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: themeProvider.seedColor, brightness: Brightness.dark),
+        colorScheme: ColorScheme.fromSeed(seedColor: themeProvider.seedColor, brightness: Brightness.dark),
       ),
       home: const Navigation(),
       themeMode: themeProvider.themeMode,
