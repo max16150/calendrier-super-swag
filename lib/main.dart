@@ -28,7 +28,7 @@ void main() async {
     );
 
     final Lab3il lab = await Lab3il.initialize(
-      apiRoute: const String.fromEnvironment('LAB_API_ROUTE'),
+      apiRoute: const String.fromEnvironment('LAB_API_ROUTE', defaultValue: 'https://3ilab.fr/api/v1'),
     );
 
     if (!kIsWeb) {

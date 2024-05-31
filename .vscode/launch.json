@@ -7,8 +7,6 @@
             "type": "dart",
             "program": "lib/main.dart",
             "args": [
-                "--dart-define-from-file=config/dev/.env",
-                "--web-browser-flag=--disable-web-security",
             ]
         },
         {
@@ -18,7 +16,6 @@
             "flutterMode": "profile",
             "program": "lib/main.dart",
             "args": [
-                "--dart-define-from-file=config/dev/.env",
             ]
         },
         {
@@ -28,7 +25,6 @@
             "flutterMode": "release",
             "program": "lib/main.dart",
             "args": [
-                "--dart-define-from-file=config/dev/.env",
             ]
         }
     ]
